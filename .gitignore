@@ -1,0 +1,38 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.userprefs
+*.sln.docstates
+
+## NuGet
+*.nupkg
+nupkg/
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+
+## Build
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+
+## IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*~
+
+## Claude
+.claude/
+
+## OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini

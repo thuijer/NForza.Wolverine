@@ -1,0 +1,23 @@
+using Marten;
+using WolverineGettingStarted.Issues;
+using WolverineReporting.Reports;
+
+namespace WolverineReporting.Handlers;
+
+public static class IssueCreatedHandler
+{
+    public static void Handle(IssueCreated @event, IDocumentSession session)
+    {
+        session.Store(new IssueReport
+        {
+            Id = @event.Id,
+            Title = @event.Title,
+            Description = @event.Description,
+            OriginatorId = @event.OriginatorId,
+            Status = "Open",
+            Created = @event.Opened,
+            LastUpdated = @event.Opened,
+            EventCount = 1
+        });
+    }
+}
