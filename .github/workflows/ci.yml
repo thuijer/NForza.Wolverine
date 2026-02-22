@@ -23,10 +23,10 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore Wolverine.ValueTypes.slnx
+        run: dotnet restore Wolverine.ValueTypes/Wolverine.ValueTypes.slnx
 
       - name: Build
-        run: dotnet build Wolverine.ValueTypes.slnx --configuration Release --no-restore
+        run: dotnet build Wolverine.ValueTypes/Wolverine.ValueTypes.slnx --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test Wolverine.ValueTypes.slnx --configuration Release --no-build
+        run: dotnet test Wolverine.ValueTypes/Wolverine.ValueTypes.slnx --configuration Release --no-build

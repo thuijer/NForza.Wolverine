@@ -24,7 +24,7 @@ jobs:
       - name: Determine version
         id: version
         run: |
-          BASE_VERSION=$(jq -r '.version' version.json)
+          BASE_VERSION=$(jq -r '.version' Wolverine.ValueTypes/version.json)
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             VERSION="$BASE_VERSION"
           else
@@ -34,16 +34,16 @@ jobs:
           echo "Publishing version: $VERSION"
 
       - name: Restore
-        run: dotnet restore Wolverine.ValueTypes.slnx
+        run: dotnet restore Wolverine.ValueTypes/Wolverine.ValueTypes.slnx
 
       - name: Build
-        run: dotnet build Wolverine.ValueTypes.slnx --configuration Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
+        run: dotnet build Wolverine.ValueTypes/Wolverine.ValueTypes.slnx --configuration Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
 
       - name: Run unit tests
-        run: dotnet test test/NForza.Wolverine.ValueTypes.Tests --configuration Release --no-build
+        run: dotnet test Wolverine.ValueTypes/test/NForza.Wolverine.ValueTypes.Tests --configuration Release --no-build
 
       - name: Pack
-        run: dotnet pack src/NForza.Wolverine.ValueTypes.Generators --configuration Release --no-build -p:Version=${{ steps.version.outputs.VERSION }} --output ./nupkg
+        run: dotnet pack Wolverine.ValueTypes/src/NForza.Wolverine.ValueTypes.Generators --configuration Release --no-build -p:Version=${{ steps.version.outputs.VERSION }} --output ./nupkg
 
       - name: Verify package contents
         run: |
