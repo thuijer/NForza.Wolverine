@@ -15,7 +15,7 @@ public class Issue
     public string Description { get; set; } = string.Empty;
     public bool IsOpen { get; set; }
 
-    public DateTimeOffset Opened { get; set; }
+    public DateTimeOffset OpenedAt { get; set; }
 
     public IList<IssueTask> Tasks { get; set; } = [];
 
@@ -26,21 +26,14 @@ public class Issue
         Title = created.Title;
         Description = created.Description;
         IsOpen = true;
-        Opened = created.Opened;
+        OpenedAt = created.OpenedAt;
     }
 
-    public void Apply(IssueAssigned assigned)
-    {
-        AssigneeId = assigned.AssigneeId;
-    }
+    public void Apply(IssueUnassigned unassigned) => AssigneeId = null;
 
-    public void Apply(IssueClosed closed)
-    {
-        IsOpen = false;
-    }
+    public void Apply(IssueAssigned assigned) => AssigneeId = assigned.AssigneeId;
 
-    public void Apply(IssueOpened opened)
-    {
-        IsOpen = true;
-    }
+    public void Apply(IssueClosed closed) => IsOpen = false;
+
+    public void Apply(IssueOpened opened) => IsOpen = true;
 }

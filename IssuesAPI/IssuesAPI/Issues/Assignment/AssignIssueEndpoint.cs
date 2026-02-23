@@ -8,10 +8,17 @@ namespace Wolverine.Issues.Issues.Assignment;
 public static class AssignIssueEndpoint
 {
     [EmptyResponse]
-    [WolverinePut("/api/issues/{issueId}/assign")]
+    [WolverinePut("/issues/{issueId}/assign")]
     public static async Task Assign(AssignIssue command, IDocumentSession session)
     {
         var stream = await session.Events.FetchForWriting<Issue>(command.IssueId);
-        stream.AppendOne(new IssueAssigned(stream.Aggregate!.Id, command.AssigneeId));
+        var aggregate = stream.Aggregate!;
+
+        if (aggregate.AssigneeId.HasValue)
+        {
+            stream.AppendOne(new IssueUnassigned(aggregate.Id, aggregate.AssigneeId.Value));
+        }
+
+        stream.AppendOne(new IssueAssigned(aggregate.Id, command.AssigneeId, aggregate.Title));
     }
 }

@@ -8,10 +8,12 @@ namespace Wolverine.Issues.Issues.Lifecycle;
 public static class CloseIssueEndpoint
 {
     [EmptyResponse]
-    [WolverinePut("/api/issues/{issueId}/close")]
+    [WolverinePut("/issues/{issueId}/close")]
     public static async Task Close(CloseIssue command, IDocumentSession session)
     {
         var stream = await session.Events.FetchForWriting<Issue>(command.IssueId);
-        stream.AppendOne(new IssueClosed(stream.Aggregate!.Id, DateTimeOffset.UtcNow));
+        var aggregate = stream.Aggregate!;
+        var closed = new IssueClosed(aggregate.Id, aggregate.AssigneeId ?? default, DateTimeOffset.UtcNow);
+        stream.AppendOne(closed);
     }
 }

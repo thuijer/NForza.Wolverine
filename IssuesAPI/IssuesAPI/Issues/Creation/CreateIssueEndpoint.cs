@@ -10,7 +10,7 @@ public record IssueCreatedResponse(IssueId Id, string Title, string Description)
 
 public static class CreateIssueEndpoint
 {
-    [WolverinePost("/api/issues")]
+    [WolverinePost("/issues")]
     public static (IssueCreatedResponse, IStartStream) Post(CreateIssue command)
     {
         var created = new IssueCreated(
@@ -22,7 +22,6 @@ public static class CreateIssueEndpoint
         );
 
         var startStream = MartenOps.StartStream<Issue>(created.Id.AsGuid(), created);
-
         var response = new IssueCreatedResponse(created.Id, created.Title, created.Description);
 
         return (response, startStream);

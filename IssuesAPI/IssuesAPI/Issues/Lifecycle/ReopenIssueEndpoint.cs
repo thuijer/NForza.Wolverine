@@ -8,10 +8,12 @@ namespace Wolverine.Issues.Issues.Lifecycle;
 public static class ReopenIssueEndpoint
 {
     [EmptyResponse]
-    [WolverinePut("/api/issues/{issueId}/reopen")]
+    [WolverinePut("/issues/{issueId}/reopen")]
     public static async Task Reopen(ReopenIssue command, IDocumentSession session)
     {
         var stream = await session.Events.FetchForWriting<Issue>(command.IssueId);
-        stream.AppendOne(new IssueOpened(stream.Aggregate!.Id, DateTimeOffset.UtcNow));
+        var aggregate = stream.Aggregate!;
+        var reopened = new IssueOpened(aggregate.Id, aggregate.AssigneeId ?? default, DateTimeOffset.UtcNow);
+        stream.AppendOne(reopened);
     }
 }
