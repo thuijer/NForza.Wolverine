@@ -11,7 +11,7 @@ public static class CreateOrderEndpoint
     {
         var orderId = new OrderId();
         var @event = new OrderCreated(orderId, request.CustomerId, request.Amount);
-        var startStream = MartenOps.StartStream<Order>(orderId, @event);
+        var startStream = MartenOps.StartStream<Order>(orderId.AsGuid(), @event);
         return (new OrderResponse(orderId, request.CustomerId, request.Amount, null), startStream);
     }
 }

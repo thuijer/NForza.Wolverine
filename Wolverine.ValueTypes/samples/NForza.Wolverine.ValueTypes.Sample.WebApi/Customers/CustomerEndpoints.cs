@@ -11,7 +11,7 @@ public static class CustomerEndpoints
     {
         var customerId = new CustomerId();
         var @event = new CustomerCreated(customerId, request.Name);
-        var startStream = MartenOps.StartStream<Customer>(customerId, @event);
+        var startStream = MartenOps.StartStream<Customer>(customerId.AsGuid(), @event);
         return (new CustomerResponse(customerId, request.Name), startStream);
     }
 
